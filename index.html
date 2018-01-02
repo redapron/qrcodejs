@@ -8,13 +8,16 @@
 <script type="text/javascript" src="qrcode.js"></script>
 </head>
 <body>
-<input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" /><br />
+<input id="text" type="text" value="00020101021129390016A000000677010111031500499900004895853037645802TH6304F5E5" style="width:80%" /><br />
 <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+
+<textarea id="out" name="something">This text gets removed</textarea>
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
 	width : 100,
-	height : 100
+	height : 100, 
+	correctLevel : QRCode.CorrectLevel.M
 });
 
 function makeCode () {		
@@ -27,6 +30,38 @@ function makeCode () {
 	}
 	
 	qrcode.makeCode(elText.value);
+
+
+    document.getElementById("out").value = decode(elText.value)
+}
+
+function decode(s) {
+    // rtn = ""
+    for (i = 0, len = s.length; i < len;) {
+
+        // header
+        // rtn += "debug i: " + i + "\n\n"
+        header = s.substr(i, 2)
+        rtn += header + " ";
+        i = i+2;
+
+        // length
+        l = s.substr(i, 2);
+        rtn += l + " ";
+        i = i+2;
+
+        // value
+        value = s.substr(i, l)
+        if (header == "29") {
+            // decode(value)
+        } else {
+            rtn += value + "\n";
+            i = i + parseInt(l)
+        }
+
+    }
+
+    return rtn
 }
 
 makeCode();
