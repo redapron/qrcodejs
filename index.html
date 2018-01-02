@@ -11,7 +11,7 @@
 <input id="text" type="text" value="00020101021129390016A000000677010111031500499900004895853037645802TH6304F5E5" style="width:80%" /><br />
 <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
 
-<textarea id="out" name="something">This text gets removed</textarea>
+<textarea id="out" name="something" style="width:80%; height:80%;" rows="99">This text gets removed</textarea>
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -36,8 +36,8 @@ function makeCode () {
 }
 
 function decode(s) {
-    // rtn = ""
-    for (i = 0, len = s.length; i < len;) {
+    var rtn = ""
+    for (var i = 0, len = s.length; i < len;) {
 
         // header
         // rtn += "debug i: " + i + "\n\n"
@@ -53,7 +53,9 @@ function decode(s) {
         // value
         value = s.substr(i, l)
         if (header == "29") {
-            // decode(value)
+            rtn += "\n"
+            decode(value)
+            rtn += ">> \n"
         } else {
             rtn += value + "\n";
             i = i + parseInt(l)
